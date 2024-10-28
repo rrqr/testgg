@@ -42,7 +42,7 @@ def send_requests_threaded(target, request_count, stop_flag):
                 pass
 
     threads = []
-    num_threads = 1000  # زيادة عدد الخيوط بشكل كبير
+    num_threads = 5000  # زيادة عدد الخيوط بشكل كبير
     for _ in range(num_threads):
         thread = threading.Thread(target=send_request_thread)
         threads.append(thread)
