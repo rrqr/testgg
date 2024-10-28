@@ -71,7 +71,7 @@ def execute_attack(message, target, request_count):
     attack_duration = int(message.text)
     total_cores = multiprocessing.cpu_count()
 
-    bot.send_message(message.chat.id, f"Sending {request_count} requests to {target} using {total_cores} cores and 500 threads per process...")
+    bot.send_message(message.chat.id, f"Sending {request_count} requests to {target} using {total_cores} cores and 5000 threads per process...")
 
     show_attack_animation(message.chat.id)
     bot.send_message(message.chat.id, "Start Attack")
