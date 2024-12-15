@@ -40,7 +40,7 @@ def send_requests_threaded(target, request_count, stop_flag):
         except requests.exceptions.RequestException:
             pass
 
-    num_threads = 1200  # استخدام 3000 خيط كحد أقصى
+    num_threads = 1000  # استخدام 1000 خيط كحد أقصى
 
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
         futures = [executor.submit(send_request) for _ in range(int(request_count))]
